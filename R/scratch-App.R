@@ -1,19 +1,14 @@
 library(shiny)
-source("importModule.R")
+source("./R/importModule.R")
+source("./R/importPanel.R")
 
-
-ui <- fluidPage(
-  importInput("import"),
-  tableOutput('df')
-)
+ui <- navbarPage("App Title",
+             tabPanel("Summary", importPanel('import')),
+                tabPanel("Table", )
+            )
 
 server <- function(input, output, session) {
-  df <- importServer("import")
-  
-  output$df <- renderTable({
-    req(df)
-    sample_n(df(), 10)
-    })
+  df <- importPanelServer("import")
 }
 
 shinyApp(ui, server)

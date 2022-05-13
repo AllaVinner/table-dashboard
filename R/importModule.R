@@ -1,11 +1,8 @@
 library(shiny)
+library(tidyverse)
 
-
-importInput <- function(id) {
-  tagList(
-    fileInput(NS(id,'file_input'), 'Chose file', accept = ".csv"),
-    tableOutput(NS(id,'df'))
-  )
+importUI <- function(id) {
+    fileInput(NS(id,'file_input'), 'Chose file', accept = ".csv")
   }
 
 importServer <- function(id) {
@@ -26,8 +23,10 @@ importApp <- function() {
   server <- function(input, output, session) {
     df <- importServer("import")
     output$table <- renderTable({
-      sample_n(df(), 10)
+      print(class(df()))
+      df()
     })
+    df
   }
   shinyApp(ui, server)
 }
