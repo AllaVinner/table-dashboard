@@ -1,21 +1,31 @@
 library(shiny)
 
 
-histogramApp <- function(){
-  ui <- fluidPage(
-    uiOutput('plots')
-  )
-  server <- function (input, output, session) {
-    col <- 'height'
-    output$plots <- renderUI({
-      plotOutput('h')
-    })
+histogramPanel <- function(id) {
+  uiOutput(NS(id,'plots'))
+}
 
-    output$h <- renderPlot({
-      ggplot(data, aes(x=value)) +
-        geom_histogram()
-    })
+histogramServer <- function(id, df) {
+  moduleServer(id, function (input, output, session) {
+    output$plots <- renderUI({
+      map(names(df), ~ renderPlot({
+          ggplot(df, aes(x=.data[[.x]])) + geom_histogram()})
+          )
+        })
+  })
+}
+
+
+histogramApp <- function(){
+  df <- starwars %>% select(mass, height)
+  ui <- fluidPage(
+    histogramPanel('h')
+  )
+  
+  server <- function(input,output,session){
+    histogramServer('h',df )
   }
+  shinyApp(ui, server)
 }
 
 

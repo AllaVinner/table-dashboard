@@ -1,4 +1,4 @@
-lirary(tidyverse)
+library(tidyverse)
 
 df <- read_delim('./data/pokemon.csv', delim =',')
 
