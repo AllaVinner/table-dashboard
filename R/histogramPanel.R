@@ -1,5 +1,6 @@
 library(shiny)
-
+library(tidyverse)
+options(shiny.autoreload = TRUE)
 
 histogramPanel <- function(id) {
   uiOutput(NS(id,'plots'))
@@ -27,7 +28,6 @@ histogramApp <- function(){
   }
   shinyApp(ui, server)
 }
-
 
 
 histogramApp()
